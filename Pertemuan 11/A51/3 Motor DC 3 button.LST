@@ -1,0 +1,30 @@
+8051 Assembler           Version 1.00   04/30/120 18:23:52    Page 1
+D:\Kuliah\Mikroprosessor\Pertemuan 11\A51\3 Motor DC 3 button.A51
+
+
+
+    1 0010                      ORG 10H
+    2 0010 75A001               MOV P2, #01H
+    3 0013              MULAI:
+    4 0013 E5B0                 MOV A,P3
+    5 0015 B4FE05               CJNE A, #0FEH, TERUS
+    6 0018 75A001               MOV P2, #01H
+    7 001B 80F6                 SJMP MULAI
+    8 001D              
+    9 001D              TERUS:
+   10 001D B4FD05               CJNE A, #0FDH, TERUS2
+   11 0020 75A002               MOV p2, #02H
+   12 0023 80EE                 SJMP MULAI
+   13 0025              
+   14 0025              TERUS2:
+   15 0025 B4FBEB               CJNE A, #0FBH, MULAI
+   16 0028 75A004               MOV p2, #04H
+   17 002B 80E6                 SJMP MULAI
+   18 002D              END
+
+Defined Symbols:
+
+Defined Labels:
+  MULAI                                     000013  19
+  TERUS                                     00001D  29
+  TERUS2                                    000025  37

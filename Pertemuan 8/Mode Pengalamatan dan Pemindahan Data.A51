@@ -1,0 +1,9 @@
+MOV A,#15
+MOV R1,A
+MOV A,#0Ah
+MOV @R1,A
+
+MOV P3,A
+MOV P0,0Fh
+
+END

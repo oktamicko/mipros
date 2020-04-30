@@ -1,0 +1,115 @@
+1. Port berapa yang digunakan sebagai port input dan port output?
+   Jawab:
+   Port input adalah port 3
+   Port output adalah port 1
+
+2. Apa perbedaan menyalakan dan mematikan LED pada sintak ke 2 dan ke 3?
+   Jawab:
+   Pada sintak ke 2 praktikan menyalakan/mematikan led dengan 2 buah push-button, push-button pertama
+   mentrigger P3.0 untuk mematikan LED dan push-button kedua mentrigger P3.1 untuk memnyalakan LED.
+   Sedangkan pada sintak ke 3 praktikan menyalakan/mematikan led hanya dengan 1 buah push-button pada
+   port P3.0.
+
+3. Tuliskan sintak yang membedakan cara mematikan dan menyalakan LED pada sintak ke 2 dan ke 3?
+   Jawab:
+   Perbedaanya terletak pada penggunaan register. Pada sintak ke 2 praktikan tidak menggunakan register
+   sedangkan pada sintak ke 3 praktikan menggunakan register sebagai memori kondisi apakah lampu hidup/mati.
+   Sintak: CJNE    R0,#0,TERUS
+
+4. Jika MSB pada port input pada percobaan ke 2 dan ke 3 bernilai LOW, apakah masih bisa menyalakan dan mematikan LED? berikan penjelasan!
+   Jawab:
+   Jika MSB diberi nilai LOW, maka program tidak akan berjalan semestinya. 
+   Dimana praktikan tidak dapat menyalakan ataupun mematikan LED kembali. Hal ini terjadi karena parameter
+   pembanding yang sebelumnya dipakai adalah kondisi ketika MSB bernilai HIGH, jika MSB diberi nilai LOW
+   maka parameter yang semestinya dibandingkan harus berubah juga. Jika tidak berubah maka program akan selalu melooping,
+   karena tidak akan ada parameter yang sama walaupun tombol ditekan.
+
+5. Buatlah program yang dikendalikan oleh dua buah saklar push-button (A dan B) sebagai berikut:
+   
+   A    B   Running LED
+   0    0   LED nyala dari tepi ke tengah
+   0    1   LED nyala dari kiri ke kanan
+   1    0   LED nyala dari kanan ke kiri
+   1    1   LED nyala dari tengah ke tepi
+
+   Jawab:
+
+   
+        ORG 0H
+MULAI:
+        MOV     A,P3
+        CJNE    A,#0FCH,TERUS
+        MOV     P1,#81H
+        ACALL   DELAY
+        MOV     P1,#42H
+        ACALL   DELAY
+        MOV     P1,#24H
+        ACALL   DELAY
+        MOV     P1,#18H
+        ACALL   DELAY
+        SJMP    MULAI
+TERUS:
+        CJNE    A,#0FDH,TERUS2
+        MOV     P1,#80H
+        ACALL   DELAY
+        MOV     P1,#40H
+        ACALL   DELAY
+        MOV     P1,#20H
+        ACALL   DELAY
+        MOV     P1,#10H
+        ACALL   DELAY
+        MOV     P1,#8H
+        ACALL   DELAY
+        MOV     P1,#4H
+        ACALL   DELAY
+        MOV     P1,#2H
+        ACALL   DELAY
+        MOV     P1,#1H
+        ACALL   DELAY
+        SJMP    MULAI
+        
+TERUS2:
+        CJNE    A,#0FEH,TERUS3
+        MOV     P1,#1H
+        ACALL   DELAY
+        MOV     P1,#2H
+        ACALL   DELAY
+        MOV     P1,#4H
+        ACALL   DELAY
+        MOV     P1,#8H
+        ACALL   DELAY
+        MOV     P1,#10H
+        ACALL   DELAY
+        MOV     P1,#20H
+        ACALL   DELAY
+        MOV     P1,#40H
+        ACALL   DELAY
+        MOV     P1,#80H
+        ACALL   DELAY
+        SJMP MULAI
+
+TERUS3:
+        CJNE    A,#0FFH,MULAI
+        MOV     P1,#18H
+        ACALL   DELAY
+        MOV     P1,#24H
+        ACALL   DELAY
+        MOV     P1,#42H
+        ACALL   DELAY
+        MOV     P1,#81H
+        ACALL   DELAY
+        SJMP    MULAI
+
+DELAY:
+        MOV     R0,#5H
+DELAY1:
+        MOV     R1,#0FFH
+DELAY2:
+        MOV     R2,#0FFH
+        DJNZ    R2,$
+        DJNZ    R1,DELAY2
+        DJNZ    R0,DELAY1
+        RET
+
+END
+   

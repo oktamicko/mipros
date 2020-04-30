@@ -1,0 +1,21 @@
+MOV A,#5
+MOV B,#6
+MUL AB
+MOV 05h,A
+
+MOV A,#2
+MOV B,#3
+ADD A,B
+
+MOV B,#2
+MUL AB
+
+MOV B,05h
+ADD A,B
+
+MOV B,#4
+DIV AB
+
+MOV R0,A
+
+END
