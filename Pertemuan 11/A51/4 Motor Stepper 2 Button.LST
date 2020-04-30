@@ -1,0 +1,66 @@
+8051 Assembler           Version 1.00   04/30/120 19:58:48    Page 1
+D:\Kuliah\Mikroprosessor\mipros\Pertemuan 11\A51\4 Motor Stepper 2 Button.A51
+
+
+
+    1 0010                      ORG 10H
+    2 0010              MULAI:
+    3 0010 E5B0                 MOV     A, P3
+    4 0012 B4FE2A               CJNE    A, #0FEH, TERUS
+    5 0015              
+    6 0015 75A007               MOV     P2, #00000111B
+    7 0018 116C                 ACALL   DELAY
+    8 001A 75A003               MOV     P2, #00000011B
+    9 001D 116C                 ACALL   DELAY
+   10 001F 75A00B               MOV     P2, #00001011B
+   11 0022 116C                 ACALL   DELAY
+   12 0024 75A009               MOV     P2, #00001001B
+   13 0027 116C                 ACALL   DELAY
+   14 0029 75A00D               MOV     P2, #00001101B
+   15 002C 116C                 ACALL   DELAY
+   16 002E 75A00C               MOV     P2, #00001100B
+   17 0031 116C                 ACALL   DELAY
+   18 0033 75A00E               MOV     P2, #00001110B
+   19 0036 116C                 ACALL   DELAY
+   20 0038 75A006               MOV     P2, #00000110B
+   21 003B 116C                 ACALL   DELAY
+   22 003D 80D1                 SJMP    MULAI
+   23 003F              
+   24 003F              TERUS:
+   25 003F B4FDCE               CJNE    A, #0FDH, MULAI
+   26 0042              
+   27 0042 75A006               MOV     P2, #00000110B
+   28 0045 116C                 ACALL   DELAY
+   29 0047 75A00E               MOV     P2, #00001110B
+   30 004A 116C                 ACALL   DELAY
+   31 004C 75A00C               MOV     P2, #00001100B
+   32 004F 116C                 ACALL   DELAY
+   33 0051 75A00D               MOV     P2, #00001101B
+   34 0054 116C                 ACALL   DELAY
+   35 0056 75A009               MOV     P2, #00001001B
+   36 0059 116C                 ACALL   DELAY        
+   37 005B 75A00B               MOV     P2, #00001011B
+   38 005E 116C                 ACALL   DELAY
+   39 0060 75A003               MOV     P2, #00000011B
+   40 0063 116C                 ACALL   DELAY
+   41 0065 75A007               MOV     P2, #00000111B
+   42 0068 116C                 ACALL   DELAY
+   43 006A              
+   44 006A 80A4                 SJMP    MULAI
+   45 006C 7801         DELAY:  MOV R0, #1H
+   46 006E 7950         DELAY1: MOV R1, #050H
+   47 0070 7A00         DELAY2: MOV R2, #0H
+   48 0072 DAFE                 DJNZ R2, $
+   49 0074 D9FA                 DJNZ R1, DELAY2
+   50 0076 D8F6                 DJNZ R0, DELAY1
+   51 0078 22                   RET
+   52 0079              END     
+
+Defined Symbols:
+
+Defined Labels:
+  DELAY                                     00006C  108
+  DELAY1                                    00006E  110
+  DELAY2                                    000070  112
+  MULAI                                     000010  16
+  TERUS                                     00003F  63
