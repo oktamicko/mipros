@@ -1,0 +1,134 @@
+1. Motor DC Manual
+
+D. Kendali manual motor DC
+
+	a. Jika RV1 nilainya diperbesar maka arus yang menuju basis kapasitor menjadi kecil,
+           ketika arus yang melewati sangat kecil (RV1 mendekati 100%) maka kecepatan putaran motor dc
+           akan berkurang, begitupun sebaliknya jika RV1 0% maka kecepatan motor dc akan semakin cepat.
+
+	b. Ketika motor dc dari kecepatan maksimum dan diturunkan ke kecepatan minimumnya motor dc tidak akan
+	   langsung berhenti, sebab induksi yang terjadi didalam motor dc tidak akan langsung berhenti tetapi
+	   akan melambat secara bertahap.
+
+	c. Motor DC merupakan jenis motor yang menggunakan tegangan searah sebagai sumber tenaganya.
+	   Dengan memberikan beda tegangan pada kedua terminal tersebut, motor akan berputar pada satu arah,
+ 	   dan bila polaritas dari tegangan tersebut dibalik maka arah putaran motor akan terbalik pula.
+	   
+	d. Polaritas dari tegangan yang diberikan pada dua terminal menentukan arah putaran motor sedangkan 
+	   besar dari beda tegangan pada kedua terminal menentukan kecepatan motor. 
+	
+	e. Menunjukan induksi magnet yang diberikan dan akan berpengaruh terhadap arah perputarannya.
+
+E. Kendali manual motor Stepper
+	
+	a. Nilai yang ditunjukan merupakan nilai sudut derajat dari motor stepper tersebut.
+	b Tanda (+) dan tanda (-) menunjukan polaritas dari motor tersebut, jika + artinya motor tersebut diberi
+	  tegangan positif dan menjadi kutub selatan rotor dalam motor, jika negatif menjadi kutub utaranya.
+	c. Berputar searah jarum jam.
+	d. Berputar berkebalikan dengan arah jarum jam.
+	e. Untuk mengatur kecepatan putaran motor stepper maka dengan meningkatkan frekuensi atau pulse per detik yang
+	   diberikan. Sedangkan, untuk merubah arah pergerakan motor stepper dengan memberi tegangan atau pulse ke kutub
+	   yang ingin disesuaikan arahnya.
+
+F. Kendali manual motor servo
+	a. 2ms
+	b. 1ms
+	c. Nilai dari motor servo akan semakin berkurang
+	d. Nilai dari motor servo akan semakin bertambah
+	e. Kesimpulannya semakin cepat jarak antar sinyal pulse yang ada maka semakin besar nilai motor servo tersebut dan
+	   kebalikannya.
+
+2. Motor DC menggunakan mikrokontroller
+
+A. Kendali motor dc menggunakan mikrokontroller
+	a. P3.0 dan P3.1
+
+	b. CJNE A, #0FEH, TERUS
+	   CJNE A, #0FDH, MULAI
+
+	c. MOV A, P1
+	   CJNE A, #0DF, TERUS
+	   CJNE A, #0BF, MULAI
+
+	d.           ORG 10H
+		     MOV P2, #01H
+		MULAI:
+       			 MOV A,P3
+		         CJNE A, #0FEH, TERUS
+		         MOV P2, #01H
+		         SJMP MULAI
+
+			 TERUS:
+		         CJNE A, #0FDH, TERUS2
+		         MOV p2, #02H
+		         SJMP MULAI
+
+		TERUS2:
+		        CJNE A, #0FBH, MULAI
+		        MOV p2, #04H
+		        SJMP MULAI
+		END
+
+B. Kendali motor stepper menggunakan mikrokontroller
+	a. Transistor sebagai saklar, ketika basis diberi tegangan maka pin 
+	   pada motor stepper akan diteruskan ke ground, sehingga akan ada perubahan
+	   kutub pada motor stepper.
+
+	b. Motor stepper bergerak berdasarkan sudut yang telah ditentukan. Untuk membuat
+	   satu rotasi penuh maka perlu beberapa step sudut yang harus di lakukan. Jika delay
+	   antara sudut di perkecil ma pergerakan motor akan semakin halus, jika delay diperbesar
+	   pergerakan akan berhenti sejenak.
+
+	c.         
+	ORG 10H
+MULAI:
+        MOV     A, P3
+        CJNE    A, #0FEH, TERUS
+
+        MOV     P2, #00000111B
+        ACALL   DELAY
+        MOV     P2, #00000011B
+        ACALL   DELAY
+        MOV     P2, #00001011B
+        ACALL   DELAY
+        MOV     P2, #00001001B
+        ACALL   DELAY
+        MOV     P2, #00001101B
+        ACALL   DELAY
+        MOV     P2, #00001100B
+        ACALL   DELAY
+        MOV     P2, #00001110B
+        ACALL   DELAY
+        MOV     P2, #00000110B
+        ACALL   DELAY
+        SJMP    MULAI
+
+TERUS:
+        CJNE    A, #0FDH, MULAI
+
+        MOV     P2, #00000110B
+        ACALL   DELAY
+        MOV     P2, #00001110B
+        ACALL   DELAY
+        MOV     P2, #00001100B
+        ACALL   DELAY
+        MOV     P2, #00001101B
+        ACALL   DELAY
+        MOV     P2, #00001001B
+        ACALL   DELAY        
+        MOV     P2, #00001011B
+        ACALL   DELAY
+        MOV     P2, #00000011B
+        ACALL   DELAY
+        MOV     P2, #00000111B
+        ACALL   DELAY
+
+        SJMP    MULAI
+DELAY:  MOV R0, #1H
+DELAY1: MOV R1, #050H
+DELAY2: MOV R2, #0H
+        DJNZ R2, $
+        DJNZ R1, DELAY2
+        DJNZ R0, DELAY1
+        RET
+END     
