@@ -1,0 +1,77 @@
+C. Membuat karakter pada LCD
+    
+   4. 
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+String anggotaKelompok[] = {
+  "Okta Graedmicko",
+  "M Faris Ramdhani",
+  "M Daffa Hanan",
+  "Tria Febriyanti"
+};
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+
+  for (int i = 0; i < 4; i++) {
+    lcd.setCursor(17, 0);
+    lcd.print(anggotaKelompok[i]);
+
+    for (int j = 0; j < 32; j++) {
+      lcd.scrollDisplayLeft();
+      delay(150);
+    }
+    lcd.clear();
+  }
+}
+
+2. Analog to Digital
+
+1. Nilai terkecil adalah ketika analog reference di setting INTERNAL, 
+   dan terbesat ketika DEFAULT.
+2. Karena ketika analog reference DEFAULT maka arduino akan membandingkan nilai input analog
+   yang terbaca dengan supply arduino yaiut 5V, ketika INTERNAL maka akan dibandingkan dengan
+   supply yang ada dalam chip Atmega yaitu 1.1V, sedangkan ketika EXTERNAL arduino akan membandingkan
+   sesuai dengan besar supply yang diberikan pada pin aref.
+3. 
+
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+float volt;
+
+String anggotaKelompok[] = {
+  "Okta Graedmicko",
+  "M Faris Ramdhani",
+  "M Daffa Hanan",
+  "Tria Febriyanti"
+};
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  analogReference(DEFAULT);
+  int val = analogRead(A0);
+  volt = (5.0/1023.0) * val;
+
+  lcd.setCursor(0, 0);
+  if (volt > 4) {
+    lcd.print(anggotaKelompok[0]);
+  } else if (volt > 3) {
+    lcd.print(anggotaKelompok[1]);
+  } else if (volt > 2) {
+    lcd.print(anggotaKelompok[2]);
+  } else if (volt > 1) {
+    lcd.print(anggotaKelompok[3]);
+  } else {
+    lcd.print("Naikan Tegangan!");
+  }
+  lcd.clear();
+}
